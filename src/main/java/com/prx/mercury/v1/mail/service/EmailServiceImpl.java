@@ -3,7 +3,7 @@ package com.prx.mercury.v1.mail.service;
 import com.prx.mercury.v1.mail.pojo.Mail;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
-import lombok.RequiredArgsConstructor;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,7 +11,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,12 +26,18 @@ import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE
  * @since 11
  */
 @Service
-@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
+
     private final JavaMailSender javaMailSender;
+    private final Configuration freemarkerConfig;
+
     @Value("${spring.mail.username}")
     private String sender;
-    private final Configuration freemarkerConfig;
+
+    public EmailServiceImpl(JavaMailSender javaMailSender, Configuration freemarkerConfig) {
+        this.javaMailSender = javaMailSender;
+        this.freemarkerConfig = freemarkerConfig;
+    }
 
     /**
      *
@@ -54,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
                 javaMailSender.send(mimeMessage);
                 return ResponseEntity.ok().build();
             }
-        } catch (MessagingException | IOException | TemplateException ex) {
+        } catch (IOException | TemplateException | MessagingException ex) {
             Logger.getLogger(EmailServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ResponseEntity.badRequest().build();
