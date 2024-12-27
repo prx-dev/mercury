@@ -1,6 +1,5 @@
 package com.prx.mercury.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +16,6 @@ import java.util.Properties;
  * @since 11
  */
 @Configuration
-@RequiredArgsConstructor
 public class MailConfig {
     @Value("${spring.mail.port}")
     private Integer port;
@@ -54,5 +52,37 @@ public class MailConfig {
         javaMailSenderImpl.setProtocol(protocol);
         javaMailSenderImpl.setJavaMailProperties(props);
         return javaMailSenderImpl;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public boolean isStarttls() {
+        return starttls;
+    }
+
+    public boolean isAuth() {
+        return auth;
     }
 }

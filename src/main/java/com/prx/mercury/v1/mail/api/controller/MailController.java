@@ -17,8 +17,6 @@ import com.prx.mercury.v1.mail.service.EmailServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -34,15 +32,19 @@ import java.util.Objects;
  * @version 1.0.0, 03-05-2022
  * @since 11
  */
-@Slf4j
 @RestController
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 @RequestMapping("v1/mail")
 public class MailController {
+
     private final EmailServiceImpl emailServiceImpl;
+
     @Value("${spring.mail.username}")
     private String username;
+
+    public MailController(EmailServiceImpl emailServiceImpl) {
+        this.emailServiceImpl = emailServiceImpl;
+    }
 
     @Operation(description = "Send a email")
     @ApiResponses(value = {
