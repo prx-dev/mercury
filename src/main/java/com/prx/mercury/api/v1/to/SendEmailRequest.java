@@ -23,8 +23,8 @@ import java.util.Map;
 public record SendEmailRequest (
         @NotNull @NotBlank @NotEmpty String templateId,
         @NotNull @NotBlank @NotEmpty String from,
-        List<String> to,
-        List<String> cc,
+        @NotNull List<EmailContact> to,
+        @NotNull List<EmailContact> cc,
         @NotNull @NotBlank @NotEmpty String subject,
         @NotNull @NotBlank @NotEmpty String body,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime sendDate,

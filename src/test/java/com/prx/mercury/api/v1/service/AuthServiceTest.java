@@ -1,6 +1,6 @@
 package com.prx.mercury.api.v1.service;
 
-import com.prx.mercury.api.v1.to.AuthResponse;
+import com.prx.mercury.client.to.AuthResponse;
 import com.prx.mercury.client.to.AuthRequest;
 import org.apache.commons.lang.NotImplementedException;
 import org.junit.jupiter.api.DisplayName;

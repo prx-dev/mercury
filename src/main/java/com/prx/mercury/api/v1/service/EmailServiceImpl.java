@@ -1,5 +1,6 @@
 package com.prx.mercury.api.v1.service;
 
+import com.prx.mercury.api.v1.to.EmailContact;
 import com.prx.mercury.api.v1.to.SendEmailRequest;
 import com.prx.mercury.api.v1.to.SendEmailResponse;
 import freemarker.template.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,6 +59,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public ResponseEntity<SendEmailResponse> sendMail(SendEmailRequest mail) {
         final var mimeMessage = javaMailSender.createMimeMessage();
+
         try {
             //TODO - Pending change to load template by template ID
             var body = FreeMarkerTemplateUtils.processTemplateIntoString(
@@ -65,7 +68,10 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setText(body, true);
             mimeMessageHelper.setSubject(mail.subject());
             mimeMessageHelper.setFrom(mail.from());
-            mimeMessageHelper.setTo(mail.to().toArray(new String[0]));
+            mimeMessageHelper.setTo((String[]) mail.to().stream().filter(Objects::nonNull).map(EmailContact::email).toArray());
+            if(!mail.cc().isEmpty()) {
+                mimeMessageHelper.setCc((String[]) mail.cc().stream().filter(Objects::nonNull).map(EmailContact::email).toArray());
+            }
             // Pending include logic to store and retrieve email ID
             javaMailSender.send(mimeMessage);
             return ResponseEntity.ok(createResponse(mail));

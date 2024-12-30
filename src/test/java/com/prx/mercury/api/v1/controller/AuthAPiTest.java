@@ -1,7 +1,7 @@
 package com.prx.mercury.api.v1.controller;
 
 import com.prx.mercury.api.v1.service.AuthService;
-import com.prx.mercury.api.v1.to.AuthResponse;
+import com.prx.mercury.client.to.AuthResponse;
 import com.prx.mercury.client.to.AuthRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

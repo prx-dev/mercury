@@ -1,8 +1,6 @@
 package com.prx.mercury.client;
 
 import com.prx.mercury.client.to.AuthRequest;
-import com.prx.mercury.client.to.BackboneUserCreateRequest;
-import com.prx.mercury.client.to.BackboneUserCreateResponse;
 import com.prx.mercury.config.BackendFeignClientInterceptor;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +18,4 @@ public interface BackboneClient {
     @PostMapping("/v1/session")
     String token(AuthRequest authRequest);
 
-    @PostMapping("/v1/users")
-    BackboneUserCreateResponse post(BackboneUserCreateRequest backboneUserCreateRequest);
 }

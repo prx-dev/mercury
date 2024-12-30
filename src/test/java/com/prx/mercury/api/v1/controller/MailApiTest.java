@@ -1,6 +1,7 @@
 package com.prx.mercury.api.v1.controller;
 
 import com.prx.mercury.api.v1.service.EmailService;
+import com.prx.mercury.api.v1.to.EmailContact;
 import com.prx.mercury.api.v1.to.SendEmailRequest;
 import com.prx.mercury.api.v1.to.SendEmailResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -26,8 +27,8 @@ class MailApiTest {
         SendEmailRequest request = new SendEmailRequest(
                 "templateName",
                 "from@example.com",
-                List.of("to@example.com"),
-                List.of("subject"),
+                List.of(new EmailContact("to@example.com", "to", " To" )),
+                List.of(new EmailContact("cc@example.com", "cc", " Cc" )),
                 "body",
                 "templateId",
                 LocalDateTime.now(),

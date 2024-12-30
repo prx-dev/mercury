@@ -1,6 +1,7 @@
 package com.prx.mercury.api.v1.controller;
 
 import com.prx.mercury.api.v1.service.EmailServiceImpl;
+import com.prx.mercury.api.v1.to.EmailContact;
 import com.prx.mercury.api.v1.to.SendEmailRequest;
 import com.prx.mercury.api.v1.to.SendEmailResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -24,8 +25,8 @@ class MailControllerTest {
         SendEmailRequest request = new SendEmailRequest(
                 "templateName",
                 "from@example.com",
-                List.of("to@example.com"),
-                List.of("subject"),
+                List.of(new EmailContact("to@example.com", "to", " To" )),
+                List.of(new EmailContact("cc@example.com", "cc", " Cc" )),
                 "body",
                 "templateId",
                 LocalDateTime.now(),
@@ -58,7 +59,7 @@ class MailControllerTest {
         SendEmailRequest request = new SendEmailRequest(
                 "templateName",
                 "invalid-email",
-                List.of("to@example.com"),
+                List.of(new EmailContact("to@example.com", "to", " To" )),
                 Collections.emptyList(),
                 "subject",
                 "body",
@@ -79,9 +80,9 @@ class MailControllerTest {
         SendEmailRequest request = new SendEmailRequest(
                 "templateName",
                 "from@example.com",
-                List.of("to@example.com"),
-                List.of(""),
-                "body",
+                List.of(new EmailContact("to@example.com", "to", " To" )),
+                List.of(new EmailContact("cc@example.com", "cc", " Cc" )),
+                "",
                 "templateId",
                 LocalDateTime.now(),
                 Map.of());
