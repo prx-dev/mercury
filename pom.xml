@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.0</version>
+        <version>3.4.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -44,8 +44,8 @@
         <maven.plugin.jxr.version>3.0.0</maven.plugin.jxr.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
         <!--        REPOSITORY-->
-        <repsy.account.user>lmata</repsy.account.user>
-        <repsy.account.password>1$Pormenos</repsy.account.password>
+        <repsy.account.user>${env.REPSY_ACCOUNT_USER}</repsy.account.user>
+        <repsy.account.password>${env.REPSY_ACCOUNT_PASSWORD}</repsy.account.password>
         <!--        OPEN API -->
         <springdoc.version>2.6.0</springdoc.version>
         <!--        SPRING -->
