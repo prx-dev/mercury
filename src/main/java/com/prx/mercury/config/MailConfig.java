@@ -1,4 +1,4 @@
-package com.prx.mercury.config;
+package com.prx.mercury.config.mapper;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,7 @@ public class MailConfig {
     private String protocol;
     @Value("${spring.mail.properties.mail.timeout}")
     private int timeout;
-    @Value("${spring.mail.properties.mail.starttls.enable}")
+    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
     private boolean starttls;
     @Value("${spring.mail.properties.mail.smtp.auth}")
     private boolean auth;
@@ -41,16 +41,18 @@ public class MailConfig {
     @Bean
     public JavaMailSender getJavaMailSender(){
         final var javaMailSenderImpl = new JavaMailSenderImpl();
-        Properties props = new Properties();
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", port);
+        javaMailSenderImpl.setHost(host);
+        javaMailSenderImpl.setPort(port);
+        javaMailSenderImpl.setProtocol(protocol);
+        javaMailSenderImpl.setUsername(username);
+        javaMailSenderImpl.setPassword(password);
+        Properties props = javaMailSenderImpl.getJavaMailProperties();
         props.put("mail.smtp.auth", auth);
         props.put("mail.smtp.starttls.enable", starttls);
-        props.put("mail.smtp.user", username);
+        props.put("mail.smtp.ssl.trust", host);
         props.put("mail.smtp.timeout", timeout);
-        javaMailSenderImpl.setPassword(password);
-        javaMailSenderImpl.setProtocol(protocol);
-        javaMailSenderImpl.setJavaMailProperties(props);
+        props.put("mail.debug", true);
+
         return javaMailSenderImpl;
     }
 
