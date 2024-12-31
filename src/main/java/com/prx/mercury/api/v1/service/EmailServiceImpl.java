@@ -15,6 +15,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.IntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,6 +60,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public ResponseEntity<SendEmailResponse> sendMail(SendEmailRequest mail) {
         final var mimeMessage = javaMailSender.createMimeMessage();
+        final IntFunction<String[]> function = String[]::new;
 
         try {
             //TODO - Pending change to load template by template ID
@@ -68,9 +70,10 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setText(body, true);
             mimeMessageHelper.setSubject(mail.subject());
             mimeMessageHelper.setFrom(mail.from());
-            mimeMessageHelper.setTo((String[]) mail.to().stream().filter(Objects::nonNull).map(EmailContact::email).toArray());
+            mimeMessageHelper.setTo(mail.to().stream().filter(Objects::nonNull).map(EmailContact::email).toArray(function));
             if(!mail.cc().isEmpty()) {
-                mimeMessageHelper.setCc((String[]) mail.cc().stream().filter(Objects::nonNull).map(EmailContact::email).toArray());
+                var ccList = mail.cc().stream().filter(Objects::nonNull).map(EmailContact::email).toArray(function);
+                mimeMessageHelper.setCc(ccList);
             }
             // Pending include logic to store and retrieve email ID
             javaMailSender.send(mimeMessage);
