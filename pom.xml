@@ -31,9 +31,11 @@
         <postgresql.version>42.7.4</postgresql.version>
         <google.gson.version>2.10.1</google.gson.version>
         <!--        PRX Commons-->
-        <com.prx.commons.version>0.0.3</com.prx.commons.version>
-        <com.prx.persistence.version>1.0.1</com.prx.persistence.version>
+        <com.prx.commons.version>0.0.4</com.prx.commons.version>
+        <com.prx.commons-services>0.0.1</com.prx.commons-services>
+        <com.prx.persistence.version>0.0.3</com.prx.persistence.version>
         <com.prx.security-oauth.version>0.0.1</com.prx.security-oauth.version>
+        <!--        Messaging tool-->
         <telegrambots.version>8.0.0</telegrambots.version>
         <!--        MAVEN-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -44,7 +46,7 @@
         <maven.plugin.jxr.version>3.0.0</maven.plugin.jxr.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
         <!--        REPOSITORY-->
-        <repsy.account.user>${env.REPSY_ACCOUNT_USER}</repsy.account.user>
+        <repsy.account.userEntity>${env.REPSY_ACCOUNT_USER}</repsy.account.userEntity>
         <repsy.account.password>${env.REPSY_ACCOUNT_PASSWORD}</repsy.account.password>
         <!--        OPEN API -->
         <springdoc.version>2.6.0</springdoc.version>
@@ -69,7 +71,7 @@
         <sonar.organization>prx-dev</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.exclusions>**/*.xml,**/*Application.*,**/exceptions/*, **/util/*, **/config/*,**/config/**/*,
-            **/mapper/*, **/*Test.*, **/cache/*, **/cache/domain/*
+            **/mapper/*, **/*Test.*, **/cache/*, **/cache/domain/*,**/repository/*,**/repository/**/*,
         </sonar.exclusions>
         <project.ruleset>${project.basedir}/ruleset.xml</project.ruleset>
     </properties>
@@ -102,7 +104,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
-            <version>3.3.2</version>
+            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -113,6 +115,17 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>${spring-cloud-dependencies.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -429,7 +442,7 @@
         <repository>
             <id>PRX-Repsy</id>
             <name>My Private Maven Repository on Repsy</name>
-            <url>https://repo.repsy.io/mvn/${repsy.account.user}/${repsy.account.password}</url>
+            <url>https://repo.repsy.io/mvn/${repsy.account.userEntity}/${repsy.account.password}</url>
         </repository>
     </distributionManagement>
 

@@ -38,4 +38,4 @@ RUN keytool -import -alias ${APP_CRT_ALIAS} -keystore /usr/lib/jvm/default-jvm/j
 USER jvapps:appmng
 
 EXPOSE 8118
-CMD ["java", "-Dspring.application.name=mercury", "-Dspring.cloud.vault.enabled=${VAULT_ENABLED}", "-Dapi.info.version=1.0.0", "-jar", "mercury.jar"]
+CMD ["java", "-Dspring.applicationEntity.name=mercury", "-Dspring.cloud.vault.enabled=${VAULT_ENABLED}", "-Dapi.info.version=1.0.0", "-jar", "mercury.jar"]

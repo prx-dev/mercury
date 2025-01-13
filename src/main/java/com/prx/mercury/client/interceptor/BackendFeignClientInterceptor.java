@@ -1,8 +1,8 @@
-package com.prx.mercury.config;
+package com.prx.mercury.client.interceptor;
 
-import com.prx.commons.pojo.UserSession;
-import com.prx.commons.properties.AuthProperties;
-import com.prx.commons.to.TokenResponse;
+import com.prx.commons.general.pojo.UserSession;
+import com.prx.commons.general.to.TokenResponse;
+import com.prx.security.properties.AuthProperties;
 import feign.RequestInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,14 +73,11 @@ public class BackendFeignClientInterceptor {
             LOGGER.error("Error occurred while connect with the Manager authenticator");
             throw new Exception("Error occurred while connect with the Manager authenticator");
         }
-        return create(response, UUID.randomUUID()).getToken();
+        return create(response, UUID.randomUUID()).token();
     }
 
     public static UserSession create(TokenResponse tokenResponse, UUID id) {
-        UserSession userSession = new UserSession();
-        userSession.setId(id);
-        userSession.setToken(tokenResponse.getAccessToken());
-        return userSession;
+        return new UserSession(id,"", tokenResponse.accessToken());
     }
 
 }
