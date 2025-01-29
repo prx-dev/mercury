@@ -1,5 +1,8 @@
 package com.prx.mercury.jpa.entity;
 
+import com.prx.mercury.jpa.sql.entity.ApplicationEntity;
+import com.prx.mercury.jpa.sql.entity.TemplateEntity;
+import com.prx.mercury.jpa.sql.entity.TemplateTypeEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +26,7 @@ class TemplateEntityTest {
         templateEntity.setApplication(new ApplicationEntity());
         templateEntity.setCreatedAt(LocalDateTime.now());
         templateEntity.setUpdatedAt(LocalDateTime.now());
-        templateEntity.setIsActive(true);
+        templateEntity.setActive(true);
 
         assertEquals(id, templateEntity.getId());
         assertEquals("Test Description", templateEntity.getDescription());
@@ -33,7 +36,7 @@ class TemplateEntityTest {
         assertNotNull(templateEntity.getApplication());
         assertNotNull(templateEntity.getCreatedAt());
         assertNotNull(templateEntity.getUpdatedAt());
-        assertTrue(templateEntity.getIsActive());
+        assertTrue(templateEntity.getActive());
     }
 
     @Test
@@ -87,8 +90,8 @@ class TemplateEntityTest {
     @DisplayName("Set and get is active")
     void setAndGetIsActive() {
         TemplateEntity templateEntity = new TemplateEntity();
-        templateEntity.setIsActive(false);
+        templateEntity.setActive(false);
 
-        assertFalse(templateEntity.getIsActive());
+        assertFalse(templateEntity.getActive());
     }
 }

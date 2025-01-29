@@ -1,4 +1,4 @@
-package com.prx.mercury.jpa.entity;
+package com.prx.mercury.jpa.sql.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "template_usages", schema = "mercury")
-public class TemplateUsageEntity {
+@Table(name = "template_defined", schema = "mercury")
+public class TemplateDefinedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @ColumnDefault("mercury.uuid_generate_v4()")
@@ -17,9 +17,9 @@ public class TemplateUsageEntity {
     private UUID id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "template_id", nullable = false)
-    private TemplateEntity templateEntity;
+    private TemplateEntity template;
 
     @NotNull
     @Column(name = "user_id", nullable = false)
@@ -28,7 +28,7 @@ public class TemplateUsageEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "application_id", nullable = false)
-    private ApplicationEntity applicationEntity;
+    private ApplicationEntity application;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
@@ -46,9 +46,13 @@ public class TemplateUsageEntity {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "frequency_type", nullable = false)
+    private FrequencyTypeEntity frequencyType;
 
-    ///  Create an instance of TemplateUsageEntity
-    public TemplateUsageEntity() {
+    /// Create an instance of TemplateDefinedEntity
+    public TemplateDefinedEntity() {
         // Default constructor
     }
 
@@ -61,11 +65,11 @@ public class TemplateUsageEntity {
     }
 
     public TemplateEntity getTemplate() {
-        return templateEntity;
+        return template;
     }
 
-    public void setTemplate(TemplateEntity templateEntity) {
-        this.templateEntity = templateEntity;
+    public void setTemplate(TemplateEntity template) {
+        this.template = template;
     }
 
     public UUID getUserId() {
@@ -77,11 +81,11 @@ public class TemplateUsageEntity {
     }
 
     public ApplicationEntity getApplication() {
-        return applicationEntity;
+        return application;
     }
 
-    public void setApplication(ApplicationEntity applicationEntity) {
-        this.applicationEntity = applicationEntity;
+    public void setApplication(ApplicationEntity application) {
+        this.application = application;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -114,6 +118,14 @@ public class TemplateUsageEntity {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public FrequencyTypeEntity getFrequencyType() {
+        return frequencyType;
+    }
+
+    public void setFrequencyType(FrequencyTypeEntity frequencyType) {
+        this.frequencyType = frequencyType;
     }
 
 }

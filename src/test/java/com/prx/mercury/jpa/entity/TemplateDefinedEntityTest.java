@@ -1,5 +1,8 @@
 package com.prx.mercury.jpa.entity;
 
+import com.prx.mercury.jpa.sql.entity.ApplicationEntity;
+import com.prx.mercury.jpa.sql.entity.TemplateDefinedEntity;
+import com.prx.mercury.jpa.sql.entity.TemplateEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,36 +11,36 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TemplateUsageEntityTest {
+class TemplateDefinedEntityTest {
 
     @Test
     @DisplayName("Create TemplateUsageEntity with valid data")
     void createTemplateUsageEntityWithValidData() {
-        TemplateUsageEntity templateUsageEntity = new TemplateUsageEntity();
+        TemplateDefinedEntity templateDefinedEntity = new TemplateDefinedEntity();
         UUID id = UUID.randomUUID();
-        templateUsageEntity.setId(id);
-        templateUsageEntity.setTemplate(new TemplateEntity());
-        templateUsageEntity.setUserId(UUID.randomUUID());
-        templateUsageEntity.setApplication(new ApplicationEntity());
-        templateUsageEntity.setCreatedAt(LocalDateTime.now());
-        templateUsageEntity.setUpdatedAt(LocalDateTime.now());
-        templateUsageEntity.setExpiredAt(LocalDateTime.now().plusDays(1));
-        templateUsageEntity.setIsActive(true);
+        templateDefinedEntity.setId(id);
+        templateDefinedEntity.setTemplate(new TemplateEntity());
+        templateDefinedEntity.setUserId(UUID.randomUUID());
+        templateDefinedEntity.setApplication(new ApplicationEntity());
+        templateDefinedEntity.setCreatedAt(LocalDateTime.now());
+        templateDefinedEntity.setUpdatedAt(LocalDateTime.now());
+        templateDefinedEntity.setExpiredAt(LocalDateTime.now().plusDays(1));
+        templateDefinedEntity.setIsActive(true);
 
-        assertEquals(id, templateUsageEntity.getId());
-        assertNotNull(templateUsageEntity.getTemplate());
-        assertNotNull(templateUsageEntity.getUserId());
-        assertNotNull(templateUsageEntity.getApplication());
-        assertNotNull(templateUsageEntity.getCreatedAt());
-        assertNotNull(templateUsageEntity.getUpdatedAt());
-        assertNotNull(templateUsageEntity.getExpiredAt());
-        assertTrue(templateUsageEntity.getIsActive());
+        assertEquals(id, templateDefinedEntity.getId());
+        assertNotNull(templateDefinedEntity.getTemplate());
+        assertNotNull(templateDefinedEntity.getUserId());
+        assertNotNull(templateDefinedEntity.getApplication());
+        assertNotNull(templateDefinedEntity.getCreatedAt());
+        assertNotNull(templateDefinedEntity.getUpdatedAt());
+        assertNotNull(templateDefinedEntity.getExpiredAt());
+        assertTrue(templateDefinedEntity.getIsActive());
     }
 
     @Test
     @DisplayName("Set and get template")
     void setAndGetTemplate() {
-        TemplateUsageEntity templateUsageEntity = new TemplateUsageEntity();
+        TemplateDefinedEntity templateUsageEntity = new TemplateDefinedEntity();
         TemplateEntity templateEntity = new TemplateEntity();
         templateUsageEntity.setTemplate(templateEntity);
 
@@ -47,7 +50,7 @@ class TemplateUsageEntityTest {
     @Test
     @DisplayName("Set and get user ID")
     void setAndGetUserId() {
-        TemplateUsageEntity templateUsageEntity = new TemplateUsageEntity();
+        TemplateDefinedEntity templateUsageEntity = new TemplateDefinedEntity();
         UUID userId = UUID.randomUUID();
         templateUsageEntity.setUserId(userId);
 
@@ -57,7 +60,7 @@ class TemplateUsageEntityTest {
     @Test
     @DisplayName("Set and get application")
     void setAndGetApplication() {
-        TemplateUsageEntity templateUsageEntity = new TemplateUsageEntity();
+        TemplateDefinedEntity templateUsageEntity = new TemplateDefinedEntity();
         ApplicationEntity applicationEntity = new ApplicationEntity();
         templateUsageEntity.setApplication(applicationEntity);
 
@@ -67,7 +70,7 @@ class TemplateUsageEntityTest {
     @Test
     @DisplayName("Set and get created at")
     void setAndGetCreatedAt() {
-        TemplateUsageEntity templateUsageEntity = new TemplateUsageEntity();
+        TemplateDefinedEntity templateUsageEntity = new TemplateDefinedEntity();
         LocalDateTime now = LocalDateTime.now();
         templateUsageEntity.setCreatedAt(now);
 
@@ -77,7 +80,7 @@ class TemplateUsageEntityTest {
     @Test
     @DisplayName("Set and get updated at")
     void setAndGetUpdatedAt() {
-        TemplateUsageEntity templateUsageEntity = new TemplateUsageEntity();
+        TemplateDefinedEntity templateUsageEntity = new TemplateDefinedEntity();
         LocalDateTime now = LocalDateTime.now();
         templateUsageEntity.setUpdatedAt(now);
 
@@ -87,7 +90,7 @@ class TemplateUsageEntityTest {
     @Test
     @DisplayName("Set and get expired at")
     void setAndGetExpiredAt() {
-        TemplateUsageEntity templateUsageEntity = new TemplateUsageEntity();
+        TemplateDefinedEntity templateUsageEntity = new TemplateDefinedEntity();
         LocalDateTime now = LocalDateTime.now().plusDays(1);
         templateUsageEntity.setExpiredAt(now);
 
@@ -97,7 +100,7 @@ class TemplateUsageEntityTest {
     @Test
     @DisplayName("Set and get is active")
     void setAndGetIsActive() {
-        TemplateUsageEntity templateUsageEntity = new TemplateUsageEntity();
+        TemplateDefinedEntity templateUsageEntity = new TemplateDefinedEntity();
         templateUsageEntity.setIsActive(false);
 
         assertFalse(templateUsageEntity.getIsActive());

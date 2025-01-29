@@ -1,4 +1,4 @@
-package com.prx.mercury.jpa.entity;
+package com.prx.mercury.jpa.sql.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +32,7 @@ public class TemplateEntity {
     private String fileFormat;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "template_type_id", nullable = false)
     private TemplateTypeEntity templateTypeEntity;
 
@@ -50,12 +50,25 @@ public class TemplateEntity {
     private LocalDateTime updatedAt;
 
     @ColumnDefault("true")
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "active")
+    private Boolean active;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "severity_type_id", nullable = false)
+    private SeverityTypeEntity severityTypeEntity;
 
     ///  Create an instance of TemplateEntity
     public TemplateEntity() {
         // Default constructor
+    }
+
+    public SeverityTypeEntity getSeverityType() {
+        return severityTypeEntity;
+    }
+
+    public void setSeverityType(SeverityTypeEntity severityTypeEntity) {
+        this.severityTypeEntity = severityTypeEntity;
     }
 
     public UUID getId() {
@@ -122,12 +135,12 @@ public class TemplateEntity {
         this.updatedAt = updatedAt;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setActive(Boolean isActive) {
+        this.active = isActive;
     }
 
 }

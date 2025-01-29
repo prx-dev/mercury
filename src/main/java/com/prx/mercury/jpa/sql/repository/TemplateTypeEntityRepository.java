@@ -1,6 +1,6 @@
-package com.prx.mercury.jpa.repository;
+package com.prx.mercury.jpa.sql.repository;
 
-import com.prx.mercury.jpa.entity.TemplateTypeEntity;
+import com.prx.mercury.jpa.sql.entity.TemplateTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

@@ -1,4 +1,4 @@
-package com.prx.mercury.jpa.entity;
+package com.prx.mercury.jpa.sql.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -20,11 +20,6 @@ public class VerificationCodeEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userEntity;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "template_id", nullable = false)
-    private TemplateEntity templateEntity;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -74,9 +69,22 @@ public class VerificationCodeEntity {
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
+    @NotNull
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "message_record_id", nullable = false)
+    private MessageRecordEntity messageRecord;
+
     ///  Create an instance of VerificationCodeEntity
     public VerificationCodeEntity() {
         // Default constructor
+    }
+
+    public MessageRecordEntity getMessageRecord() {
+        return messageRecord;
+    }
+
+    public void setMessageRecord(MessageRecordEntity messageRecord) {
+        this.messageRecord = messageRecord;
     }
 
     public UUID getId() {
@@ -93,14 +101,6 @@ public class VerificationCodeEntity {
 
     public void setUser(UserEntity userEntity) {
         this.userEntity = userEntity;
-    }
-
-    public TemplateEntity getTemplate() {
-        return templateEntity;
-    }
-
-    public void setTemplate(TemplateEntity templateEntity) {
-        this.templateEntity = templateEntity;
     }
 
     public ApplicationEntity getApplication() {

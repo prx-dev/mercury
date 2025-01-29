@@ -1,4 +1,4 @@
-package com.prx.mercury.jpa.entity;
+package com.prx.mercury.jpa.sql.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -34,12 +34,20 @@ public class TemplateTypeEntity {
     private LocalDateTime updatedAt;
 
     @ColumnDefault("true")
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "active")
+    private Boolean active;
 
     ///  Create an instance of TemplateTypeEntity
     public TemplateTypeEntity() {
         // Default constructor
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public UUID getId() {
@@ -80,14 +88,6 @@ public class TemplateTypeEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
     }
 
 }

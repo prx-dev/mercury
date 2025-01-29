@@ -1,4 +1,4 @@
-package com.prx.mercury.config.mapper;
+package com.prx.mercury.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

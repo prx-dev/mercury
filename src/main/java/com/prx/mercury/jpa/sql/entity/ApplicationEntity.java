@@ -1,4 +1,4 @@
-package com.prx.mercury.jpa.entity;
+package com.prx.mercury.jpa.sql.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
