@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class SendEmailRequestTest {
 
@@ -18,9 +20,11 @@ class SendEmailRequestTest {
         List<EmailContact> cc = List.of(new EmailContact("cc@example.com", "Cc Name", "Cc Alias"));
         LocalDateTime sendDate = LocalDateTime.now();
         Map<String, Object> params = Map.of("key", "value");
+        var templateId = UUID.randomUUID();
 
         SendEmailRequest request = new SendEmailRequest(
-                "templateId",
+                templateId,
+                UUID.randomUUID(),
                 "from@example.com",
                 to,
                 cc,
@@ -30,7 +34,7 @@ class SendEmailRequestTest {
                 params
         );
 
-        assertEquals("templateId", request.templateId());
+        assertEquals(templateId, request.templateDefinedId());
         assertEquals("from@example.com", request.from());
         assertEquals(to, request.to());
         assertEquals(cc, request.cc());
@@ -43,12 +47,14 @@ class SendEmailRequestTest {
     @Test
     @DisplayName("Create SendEmailRequest with null params")
     void createSendEmailRequestWithNullParams() {
+        var templateId = UUID.randomUUID();
         List<EmailContact> to = List.of(new EmailContact("to@example.com", "To Name", "To Alias"));
         List<EmailContact> cc = List.of(new EmailContact("cc@example.com", "Cc Name", "Cc Alias"));
         LocalDateTime sendDate = LocalDateTime.now();
 
         SendEmailRequest request = new SendEmailRequest(
-                "templateId",
+                templateId,
+                UUID.randomUUID(),
                 "from@example.com",
                 to,
                 cc,
@@ -58,7 +64,7 @@ class SendEmailRequestTest {
                 null
         );
 
-        assertEquals("templateId", request.templateId());
+        assertEquals(templateId, request.templateDefinedId());
         assertEquals("from@example.com", request.from());
         assertEquals(to, request.to());
         assertEquals(cc, request.cc());
@@ -75,9 +81,12 @@ class SendEmailRequestTest {
         List<EmailContact> cc = List.of(new EmailContact("cc@example.com", "Cc Name", "Cc Alias"));
         LocalDateTime sendDate = LocalDateTime.now();
         Map<String, Object> params = Map.of("key", "value");
+        var templateId = UUID.randomUUID();
+        var userId = UUID.randomUUID();
 
         SendEmailRequest request = new SendEmailRequest(
-                "templateId",
+                templateId,
+                userId,
                 "from@example.com",
                 to,
                 cc,
@@ -87,7 +96,7 @@ class SendEmailRequestTest {
                 params
         );
 
-        String expected = "SendEmailRequest{templateId='templateId', from='from@example.com', to=" + to + ", cc=" + cc + ", subject='Subject', body='Body', sendDate=" + sendDate + ", params=" + params + "}";
+        String expected = "SendEmailRequest{templateId='" + templateId + "', userId='" + userId + "', from='from@example.com', to=" + to + ", cc=" + cc + ", subject='Subject', body='Body', sendDate=" + sendDate + ", params=" + params + "}";
         assertEquals(expected, request.toString());
     }
 }

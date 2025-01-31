@@ -26,6 +26,7 @@ public class SessionJwtServiceImpl implements SessionJwtService {
 
     private final JwtConfigProperties jwtConfigProperties;
     private final SecretKey key;
+    public static final String USER_ID = "uid";
 
     /**
      * Constructor to initialize SessionJwtService with JwtConfigProperties.
