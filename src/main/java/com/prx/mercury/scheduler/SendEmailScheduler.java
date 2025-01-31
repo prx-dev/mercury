@@ -1,8 +1,6 @@
 package com.prx.mercury.scheduler;
 
-import com.prx.mercury.api.v1.service.EmailService;
-import com.prx.mercury.constant.DeliveryStatusType;
-import com.prx.mercury.jpa.nosql.repository.EmailMessageRepository;
+import com.prx.mercury.processor.MessageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,34 +10,24 @@ import org.springframework.stereotype.Service;
 public class SendEmailScheduler {
 
     private final Logger logger = LoggerFactory.getLogger(SendEmailScheduler.class);
-    private final EmailMessageRepository emailMessageRepository;
-    private final EmailService emailService;
+    private final MessageProcessor messageProcessor;
 
-    public SendEmailScheduler(EmailMessageRepository emailMessageRepository, EmailService emailService) {
-        this.emailMessageRepository = emailMessageRepository;
-        this.emailService = emailService;
+    public SendEmailScheduler(MessageProcessor messageProcessor) {
+        this.messageProcessor = messageProcessor;
     }
 
     @Scheduled(fixedRate = 60000)
     public void sendEmail() {
-        logger.debug("Sending email...");
-        emailMessageRepository.findByDeliveryStatus(DeliveryStatusType.OPENED)
-                .forEach(emailMessageDocument -> {
-                    logger.debug("Sending email: {}", emailMessageDocument);
-                    emailMessageRepository.save(emailService.sendEmail(emailMessageDocument));
-                });
+        logger.debug("Initiating email sending task...");
+        messageProcessor.processMessage();
+        logger.debug("Email sending task completed.");
     }
 
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 60000)
     public void saveMessageProcessed() {
-        logger.debug("Saving message processed...");
-        emailMessageRepository.findByDeliveryStatus(DeliveryStatusType.SENT).forEach(emailMessageDocument -> {
-            logger.debug("Saving message processed: {}", emailMessageDocument);
-            emailService.saveMessageRecord(emailMessageDocument);
-            emailMessageRepository.deleteById(emailMessageDocument.id());
-            logger.debug("Message processed saved and deleted: {}", emailMessageDocument);
-        });
+        logger.debug("Initiating message processed saving task...");
+        messageProcessor.updateMessageStatus();
+        logger.debug("Message processed saving task completed.");
     }
-
 
 }

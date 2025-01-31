@@ -19,4 +19,19 @@ public record TemplateDefinedTO(
         Boolean active,
         UUID frequencyTypeId
 ) {
+
+        @Override
+        public String toString() {
+                return "TemplateDefinedTO{" +
+                        "id=" + id +
+                        ", template=" + template +
+                        ", userId=" + userId +
+                        ", applicationId=" + applicationId +
+                        ", createdAt=" + createdAt +
+                        ", updatedAt=" + updatedAt +
+                        ", expiredAt=" + expiredAt +
+                        ", active=" + active +
+                        ", frequencyTypeId=" + frequencyTypeId +
+                        '}';
+        }
 }

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface MessageStatusTypeEntityRepository extends JpaRepository<MessageStatusTypeEntity, UUID> {
+public interface MessageStatusTypeRepository extends JpaRepository<MessageStatusTypeEntity, UUID> {
     MessageStatusTypeEntity findByName(@Size(max = 120) @NotNull String name);
 }

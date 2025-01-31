@@ -32,4 +32,19 @@ public record EmailMessageTO (
         @JsonAlias("params")
         Map<String, Object> params
 ){
+
+        @Override
+        public String toString() {
+                return "EmailMessageTO{" +
+                        "templateDefinedId=" + templateDefinedId +
+                        ", userId=" + userId +
+                        ", from='" + from + '\'' +
+                        ", to=" + to +
+                        ", cc=" + cc +
+                        ", subject='" + subject + '\'' +
+                        ", body='" + body + '\'' +
+                        ", sendDate=" + sendDate +
+                        ", params=" + params +
+                        '}';
+        }
 }

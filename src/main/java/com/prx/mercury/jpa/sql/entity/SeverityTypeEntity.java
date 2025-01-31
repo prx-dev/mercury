@@ -93,4 +93,15 @@ public class SeverityTypeEntity {
         this.active = active;
     }
 
+    @Override
+    public String toString() {
+        return "SeverityTypeEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", active=" + active +
+                '}';
+    }
 }

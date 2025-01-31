@@ -16,6 +16,7 @@ public record EmailMessageDocument(
 
         @Id
         String id,
+        UUID messageId,
         UUID templateDefinedId,
         UUID userId,
         String from,

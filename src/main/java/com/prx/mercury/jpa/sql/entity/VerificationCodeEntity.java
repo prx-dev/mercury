@@ -13,6 +13,7 @@ import java.util.UUID;
 public class VerificationCodeEntity {
     @Id
     @ColumnDefault("mercury.uuid_generate_v4()")
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
 
@@ -26,17 +27,16 @@ public class VerificationCodeEntity {
     @JoinColumn(name = "application_id", nullable = false)
     private ApplicationEntity applicationEntity;
 
-    @Size(max = 6)
+    @Size(max = 12)
     @NotNull
-    @Column(name = "verification_code", nullable = false, length = 6)
+    @Column(name = "verification_code", nullable = false, length = 12)
     private String verificationCode;
 
     @NotNull
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @NotNull
-    @Column(name = "expires_at", nullable = false)
+    @Column(name = "expires_at", nullable = true)
     private LocalDateTime expiresAt;
 
     @Column(name = "verified_at")

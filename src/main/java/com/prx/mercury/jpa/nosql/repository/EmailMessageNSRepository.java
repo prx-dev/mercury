@@ -6,8 +6,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface EmailMessageRepository extends MongoRepository<EmailMessageDocument, String> {
+public interface EmailMessageNSRepository extends MongoRepository<EmailMessageDocument, String> {
     List<EmailMessageDocument> findByDeliveryStatus(DeliveryStatusType deliveryStatus);
 
     void deleteByIdEqualsIgnoreCase(String id);
+
+    long deleteByIdEquals(String id);
 }

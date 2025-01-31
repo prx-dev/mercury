@@ -1,6 +1,6 @@
 package com.prx.mercury.kafka.consumer;
 
-import com.prx.mercury.jpa.nosql.repository.EmailMessageRepository;
+import com.prx.mercury.jpa.nosql.repository.EmailMessageNSRepository;
 import com.prx.mercury.kafka.to.EmailMessageTO;
 import com.prx.mercury.mapper.EmailMessageMapper;
 import org.slf4j.Logger;
@@ -14,12 +14,12 @@ public class EmailMessageConsumerServiceImp implements EmailMessageConsumerServi
 
     private final Logger logger = LoggerFactory.getLogger(EmailMessageConsumerServiceImp.class);
 
-    private final EmailMessageRepository emaiMessageRepository;
+    private final EmailMessageNSRepository emaiMessageRepository;
     private final EmailMessageMapper emailMessageMapper;
 
 
     ///  Default constructor
-    public EmailMessageConsumerServiceImp(EmailMessageRepository emaiMessageRepository, EmailMessageMapper emailMessageMapper) {
+    public EmailMessageConsumerServiceImp(EmailMessageNSRepository emaiMessageRepository, EmailMessageMapper emailMessageMapper) {
         this.emaiMessageRepository = emaiMessageRepository;
         this.emailMessageMapper = emailMessageMapper;
     }

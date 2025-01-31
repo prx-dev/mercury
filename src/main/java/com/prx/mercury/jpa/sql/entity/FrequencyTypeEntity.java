@@ -95,4 +95,15 @@ public class FrequencyTypeEntity {
         this.active = active;
     }
 
+    @Override
+    public String toString() {
+        return "FrequencyTypeEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", active=" + active +
+                '}';
+    }
 }

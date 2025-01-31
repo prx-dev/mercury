@@ -12,4 +12,19 @@ public record TemplateTO(UUID id,
                          LocalDateTime createdAt,
                          LocalDateTime updatedAt,
                          Boolean isActive) {
+
+    @Override
+    public String toString() {
+        return "TemplateTO{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", fileFormat='" + fileFormat + '\'' +
+                ", templateType=" + templateType +
+                ", application=" + application +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", isActive=" + isActive +
+                '}';
+    }
 }
