@@ -123,7 +123,7 @@ public class EmailServiceImpl implements EmailService {
                 var ccList = cc.stream().filter(Objects::nonNull).map(EmailContact::email).toArray(function);
                 mimeMessageHelper.setCc(ccList);
             }
-//            javaMailSender.send(mimeMessage);
+            javaMailSender.send(mimeMessage);
             isProcessed = true;
         } catch (IOException | TemplateException | MessagingException ex) {
             logger.error("Error sending email: {}", ex.getMessage());

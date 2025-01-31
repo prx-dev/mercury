@@ -23,7 +23,7 @@ public class SendEmailScheduler {
         logger.debug("Email sending task completed.");
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 300000)
     public void saveMessageProcessed() {
         logger.debug("Initiating message processed saving task...");
         messageProcessor.updateMessageStatus();

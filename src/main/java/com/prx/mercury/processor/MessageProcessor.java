@@ -9,6 +9,7 @@ import com.prx.mercury.jpa.nosql.entity.EmailMessageDocument;
 import com.prx.mercury.mapper.MessageRecordMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,8 @@ public class MessageProcessor {
     private final MessageRecordMapper messageRecordMapper;
     private final MessageStatusTypeService messageStatusTypeService;
     private final VerificationCodeService verificationCodeService;
-    private static final UUID verificationCodeId = UUID.fromString("26874fdf-c999-4716-bb81-d0f15e07d679");
+    @Value("${prx.verification.code.template.id}")
+    private UUID verificationCodeId;
 
     public MessageProcessor(EmailService emailService, MessageRecordService messageRecordService,
                             TemplateDefinedService templateDefinedService, MessageRecordMapper messageRecordMapper,
