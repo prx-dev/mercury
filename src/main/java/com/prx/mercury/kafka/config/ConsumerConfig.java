@@ -2,6 +2,8 @@ package com.prx.mercury.kafka.config;
 
 import com.prx.mercury.kafka.consumer.EmailMessageConsumerService;
 import com.prx.mercury.kafka.to.EmailMessageTO;
+import io.jsonwebtoken.lang.Objects;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -22,12 +24,15 @@ public class ConsumerConfig {
     @Value("${prx.consumer.mercury.topic}")
     private String mercuryEmailTopic;
     @Value("${prx.bootstrap.server.url}")
-    private String bootstrapAddress;
+    private String bootstrapServer;
+    @Value("${prx.bootstrap.server.port}")
+    private String bootstrapServerPort;
 
     @Bean
     public ConsumerFactory<String, EmailMessageTO> emailMessageConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
-        props.put(org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                !Objects.isEmpty(bootstrapServerPort) ? bootstrapServer+":"+bootstrapServerPort : bootstrapServer);
         props.put(org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG, mercuryEmailTopic);
         props.put(org.apache.kafka.clients.consumer.ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, 20971520);
         props.put(org.apache.kafka.clients.consumer.ConsumerConfig.FETCH_MAX_BYTES_CONFIG, 20971520);
