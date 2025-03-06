@@ -89,8 +89,8 @@ public class EmailServiceImpl implements EmailService {
             logger.error(error.getMessage(), error);
             throw error;
         }
-        var result = process(templateDefinedTO.template(), emailMessageDocument.subject(), emailMessageDocument.from(),
-                emailMessageDocument.to(), emailMessageDocument.cc(), emailMessageDocument.params());
+//        var result = process(templateDefinedTO.template(), emailMessageDocument.subject(), emailMessageDocument.from(),
+//                emailMessageDocument.to(), emailMessageDocument.cc(), emailMessageDocument.params());
         return new EmailMessageDocument(
                 emailMessageDocument.id(),
                 emailMessageDocument.messageId(),
@@ -103,32 +103,33 @@ public class EmailServiceImpl implements EmailService {
                 emailMessageDocument.body(),
                 emailMessageDocument.sendDate(),
                 emailMessageDocument.params(),
-                result ? DeliveryStatusType.SENT : DeliveryStatusType.FAILED);
+                DeliveryStatusType.SENT);
+//                result ? DeliveryStatusType.SENT : DeliveryStatusType.FAILED);
     }
 
-    private boolean process(TemplateTO templateTO, String subject, String from, List<EmailContact> to, List<EmailContact> cc, Map<String, Object> params) {
-        final IntFunction<String[]> function = String[]::new;
-        final var mimeMessage = javaMailSender.createMimeMessage();
-        boolean isProcessed = false;
-
-        try {
-            var body = FreeMarkerTemplateUtils.processTemplateIntoString(
-                    freemarkerConfig.getTemplate(templateTO.location()), params);
-            final var mimeMessageHelper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
-            mimeMessageHelper.setText(body, true);
-            mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setFrom(from);
-            mimeMessageHelper.setTo(to.stream().filter(Objects::nonNull).map(EmailContact::email).toArray(function));
-            if (!cc.isEmpty()) {
-                var ccList = cc.stream().filter(Objects::nonNull).map(EmailContact::email).toArray(function);
-                mimeMessageHelper.setCc(ccList);
-            }
-            javaMailSender.send(mimeMessage);
-            isProcessed = true;
-        } catch (IOException | TemplateException | MessagingException ex) {
-            logger.error("Error sending email: {}", ex.getMessage());
-        }
-        return isProcessed;
-    }
+//    private boolean process(TemplateTO templateTO, String subject, String from, List<EmailContact> to, List<EmailContact> cc, Map<String, Object> params) {
+//        final IntFunction<String[]> function = String[]::new;
+//        final var mimeMessage = javaMailSender.createMimeMessage();
+//        boolean isProcessed = false;
+//
+//        try {
+//            var body = FreeMarkerTemplateUtils.processTemplateIntoString(
+//                    freemarkerConfig.getTemplate(templateTO.location()), params);
+//            final var mimeMessageHelper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+//            mimeMessageHelper.setText(body, true);
+//            mimeMessageHelper.setSubject(subject);
+//            mimeMessageHelper.setFrom(from);
+//            mimeMessageHelper.setTo(to.stream().filter(Objects::nonNull).map(EmailContact::email).toArray(function));
+//            if (!cc.isEmpty()) {
+//                var ccList = cc.stream().filter(Objects::nonNull).map(EmailContact::email).toArray(function);
+//                mimeMessageHelper.setCc(ccList);
+//            }
+//            javaMailSender.send(mimeMessage);
+//            isProcessed = true;
+//        } catch (IOException | TemplateException | MessagingException ex) {
+//            logger.error("Error sending email: {}", ex.getMessage());
+//        }
+//        return isProcessed;
+//    }
 
 }

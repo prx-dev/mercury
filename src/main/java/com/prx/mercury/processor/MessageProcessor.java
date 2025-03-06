@@ -88,7 +88,7 @@ public class MessageProcessor {
                 emailMessageDocument.params().get("vc").toString(),
                 emailMessageDocument.sendDate(),
                 emailMessageDocument.sendDate(),
-                null,
+                emailMessageDocument.sendDate().plusDays(2),
                 null,
                 false,
                 0,
