@@ -1,5 +1,6 @@
 package com.prx.mercury.api.v1.service;
 
+import com.google.api.services.gmail.Gmail;
 import com.prx.mercury.api.v1.to.EmailContact;
 import com.prx.mercury.api.v1.to.TemplateDefinedTO;
 import com.prx.mercury.api.v1.to.TemplateTO;
@@ -30,16 +31,28 @@ import static org.mockito.Mockito.*;
 class EmailServiceImplTest {
 
     @Mock
-    private JavaMailSender javaMailSender;
+    JavaMailSender javaMailSender;
 
     @Mock
-    private Configuration freemarkerConfig;
+    Configuration freemarkerConfig;
 
     @Mock
-    private EmailMessageNSRepository emailMessageNSRepository;
+    EmailMessageNSRepository emailMessageNSRepository;
+
+    @Mock
+    Gmail gmail;
+
+    @Mock
+    Gmail.Users gmailUsers;
+
+    @Mock
+    Gmail.Users.Messages gmailMessages;
+
+    @Mock
+    Gmail.Users.Messages.Send gmailSend;
 
     @InjectMocks
-    private EmailServiceImpl emailServiceImpl;
+    EmailServiceImpl emailServiceImpl;
 
     @Test
     @DisplayName("Find by delivery status with valid status")
@@ -167,6 +180,16 @@ class EmailServiceImplTest {
         TemplateDefinedTO templateDefinedTO = new TemplateDefinedTO(
                 UUID.randomUUID(), templateTO, userId, application, now, now, now.plusDays(1), isActive, UUID.randomUUID()
         );
+
+        // Setup the Gmail API mock chain
+        when(gmail.users()).thenReturn(gmailUsers);
+        when(gmailUsers.messages()).thenReturn(gmailMessages);
+        when(gmailMessages.send(eq("me"), any())).thenReturn(gmailSend);
+
+        // Mock the execute response with the SENT label
+        com.google.api.services.gmail.model.Message responseMessage = new com.google.api.services.gmail.model.Message();
+        responseMessage.setLabelIds(List.of(DeliveryStatusType.SENT.name()));
+        when(gmailSend.execute()).thenReturn(responseMessage);
 
         when(freemarkerConfig.getTemplate(anyString())).thenReturn(mock(freemarker.template.Template.class));
         when(javaMailSender.createMimeMessage()).thenReturn(mock(jakarta.mail.internet.MimeMessage.class));
