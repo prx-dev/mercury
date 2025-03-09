@@ -73,7 +73,8 @@
         <sonar.organization>prx-dev</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.exclusions>**/*.xml,**/*Application.*,**/exceptions/*, **/util/*, **/config/*,**/config/**/*,
-            **/mapper/*, **/*Test.*, **/cache/*, **/cache/domain/*,**/repository/*,**/repository/**/*,**/*Entity.*,**/*Document.*
+            **/mapper/*, **/*Test.*, **/cache/*,
+            **/cache/domain/*,**/repository/*,**/repository/**/*,**/*Entity.*,**/*Document.*
         </sonar.exclusions>
         <project.ruleset>${project.basedir}/ruleset.xml</project.ruleset>
     </properties>
@@ -137,6 +138,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-gmail</artifactId>
+            <version>v1-rev20240520-2.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
