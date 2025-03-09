@@ -43,17 +43,19 @@ package com.prx.mercury.api.v1.service;
         @Override
         public ResponseEntity<Void> confirmCode(VerificationCodeRequest verificationCodeRequest) {
             var verificationCodeEntityOptional = this.verificationCodeRepository.findByUserIdAndApplicationIdAndExpiresAtBeforeAndIsVerified(
-                    verificationCodeRequest.applicationId(),
                     verificationCodeRequest.userId(),
+                    verificationCodeRequest.applicationId(),
                     LocalDateTime.now(), false);
             if (verificationCodeEntityOptional.isEmpty()) {
-                throw new IllegalArgumentException("Verification code not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .header("message", "No valid verification code found for the user and application")
+                        .build();
             }
             var collectionResult = verificationCodeEntityOptional.stream()
                     .filter(verificationCodeEntity ->
                             !verificationCodeEntity.getIsVerified()
                                     && verificationCodeEntity.getAttempts() < verificationCodeEntity.getMaxAttempts())
-                    .peek(verificationCodeEntity -> {
+                    .map(verificationCodeEntity -> {
                         verificationCodeEntity.setAttempts(verificationCodeEntity.getAttempts() + 1);
                         verificationCodeEntity.setModifiedAt(LocalDateTime.now());
                         verificationCodeEntity.setModifiedBy(verificationCodeRequest.userId().toString());
@@ -62,6 +64,7 @@ package com.prx.mercury.api.v1.service;
                             verificationCodeEntity.setVerifiedAt(LocalDateTime.now());
                             logger.debug("Verification code confirmed: {}", verificationCodeEntity);
                         }
+                        return verificationCodeEntity;
                     }).toList();
 
             verificationCodeRepository.saveAll(collectionResult);
