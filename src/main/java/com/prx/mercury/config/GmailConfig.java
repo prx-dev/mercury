@@ -209,6 +209,7 @@ package com.prx.mercury.config;
                     );
                     return tokenResponse;
                 } catch (Exception e) {
+                    logger.error("Error while refreshing token, not able to process request. {}", e.getMessage());
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error while refreshing token, not able to process request.");
                 }
             }
