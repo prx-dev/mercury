@@ -1,34 +1,34 @@
 package com.prx.mercury.config;
 
-        import com.google.api.client.auth.oauth2.BearerToken;
-        import com.google.api.client.auth.oauth2.Credential;
-        import com.google.api.client.auth.oauth2.TokenResponse;
-        import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-        import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-        import com.google.api.client.http.HttpTransport;
-        import com.google.api.client.json.JsonFactory;
-        import com.google.api.client.json.gson.GsonFactory;
-        import com.google.api.services.gmail.Gmail;
-        import com.prx.commons.constants.types.MessageType;
-        import com.prx.commons.exception.StandardException;
-        import com.prx.mercury.api.v1.to.GmailCredential;
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import org.springframework.beans.factory.annotation.Value;
-        import org.springframework.context.annotation.Bean;
-        import org.springframework.context.annotation.Configuration;
-        import org.springframework.http.HttpEntity;
-        import org.springframework.http.HttpStatus;
-        import org.springframework.http.ResponseEntity;
-        import org.springframework.web.client.RestTemplate;
-        import org.springframework.web.server.ResponseStatusException;
+import com.google.api.client.auth.oauth2.BearerToken;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.gmail.Gmail;
+import com.prx.commons.constants.types.MessageType;
+import com.prx.commons.exception.StandardException;
+import com.prx.mercury.api.v1.to.GmailCredential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
-        import java.io.IOException;
-        import java.security.GeneralSecurityException;
-        import java.util.Map;
-        import java.util.Objects;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Map;
+import java.util.Objects;
 
-        import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.*;
+import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.*;
 
         /**
          * Configuration class for Gmail API connection.
@@ -43,6 +43,7 @@ package com.prx.mercury.config;
             private static final Logger logger = LoggerFactory.getLogger(GmailConfig.class);
 
             private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+            private static final String REFRESH_TOKEN_EXPIRES_IN = "refresh_token_expires_in";
             private GmailCredential gmailCredential;
 
             /**
@@ -75,8 +76,6 @@ package com.prx.mercury.config;
             @Value("${spring.google.token-uri}")
             private String tokenUri;
 
-            private final RestTemplate restTemplate;
-
             /**
              * HTTP transport instance for API communication.
              */
@@ -86,10 +85,8 @@ package com.prx.mercury.config;
              * Constructs a GmailConfig with the required RestTemplate dependency.
              * Initializes the HTTP transport during construction.
              *
-             * @param restTemplate REST client for making HTTP requests to the token endpoint
              */
-            public GmailConfig(RestTemplate restTemplate) {
-                this.restTemplate = restTemplate;
+            public GmailConfig() {
                 this.init();
             }
 
@@ -106,7 +103,7 @@ package com.prx.mercury.config;
                             clientId,
                             secretKey,
                             refreshToken,
-                            null,
+                            REFRESH_TOKEN,
                             null,
                             fromEmail
                     );
@@ -165,6 +162,7 @@ package com.prx.mercury.config;
              * @throws ResponseStatusException if token refresh fails or returns invalid data
              */
             private TokenResponse refreshToken() {
+                var restTemplate = new RestTemplate();
 
                 GmailCredential gmailCredentialLocal = new GmailCredential(
                         clientId,
@@ -187,15 +185,15 @@ package com.prx.mercury.config;
                             || Objects.isNull(mapTokenResponse.getBody())
                             || !mapTokenResponse.getBody().containsKey(ACCESS_TOKEN)
                             || !mapTokenResponse.getBody().containsKey(EXPIRES_IN)
-                            || !mapTokenResponse.getBody().containsKey(REFRESH_TOKEN)
+                            || !mapTokenResponse.getBody().containsKey(REFRESH_TOKEN_EXPIRES_IN)
                             || !mapTokenResponse.getBody().containsKey(SCOPE)
                     ) {
-                        logger.error("Error while refreshing token, not able to process request.");
+                        logger.warn("Error while refreshing token, not able to process request.");
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error while refreshing token, not able to process request.");
                     }
                     GoogleTokenResponse tokenResponse = new GoogleTokenResponse();
                     tokenResponse.setAccessToken((String) mapTokenResponse.getBody().get(ACCESS_TOKEN));
-                    tokenResponse.setExpiresInSeconds(Long.parseLong(mapTokenResponse.getBody().get(EXPIRES_IN).toString()));
+                    tokenResponse.setExpiresInSeconds(Long.getLong(mapTokenResponse.getBody().get(EXPIRES_IN).toString()));
                     tokenResponse.setRefreshToken((String) mapTokenResponse.getBody().get(REFRESH_TOKEN));
                     tokenResponse.setScope((String) mapTokenResponse.getBody().get(SCOPE));
 
@@ -203,7 +201,7 @@ package com.prx.mercury.config;
                             clientId,
                             secretKey,
                             refreshToken,
-                            REFRESH_TOKEN,
+                            null,
                             tokenResponse.getAccessToken(),
                             fromEmail
                     );
