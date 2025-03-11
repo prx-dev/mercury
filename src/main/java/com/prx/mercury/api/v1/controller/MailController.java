@@ -16,7 +16,6 @@ import com.prx.mercury.api.v1.service.EmailService;
 import com.prx.mercury.api.v1.to.SendEmailRequest;
 import com.prx.mercury.api.v1.to.SendEmailResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,9 +35,8 @@ import java.util.Objects;
 /// The request body is validated to ensure it is not null.
 ///
 /// @version 1.0.0, 03-05-2022
-/// @since 11
+/// @since 21
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/mail")
 public class MailController implements MailApi {
 
