@@ -53,7 +53,7 @@
         <!--        SPRING -->
         <spring-core.version>6.0.6</spring-core.version>
         <spring-boot.version>3.4.1</spring-boot.version>
-        <spring-cloud.version>2024.0.0</spring-cloud.version>
+        <spring-cloud.version>2024.0.1</spring-cloud.version>
         <spring-boot-kafka.version>3.3.2</spring-boot-kafka.version>
         <spring-boot-mongodb.version>3.3.2</spring-boot-mongodb.version>
         <spring-security-aouth2-autoconfigure.version>3.3.2</spring-security-aouth2-autoconfigure.version>
@@ -140,16 +140,6 @@
             <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.apis</groupId>
-            <artifactId>google-api-services-gmail</artifactId>
-            <version>v1-rev20240520-2.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
@@ -201,16 +191,6 @@
             <groupId>com.prx</groupId>
             <artifactId>security-oauth</artifactId>
             <version>${com.prx.security-oauth.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-            <version>${spring-cloud-dependencies.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.netflix.eureka</groupId>
-            <artifactId>eureka-client-jersey3</artifactId>
-            <version>2.0.3</version>
         </dependency>
         <!--        Converter-->
         <dependency>

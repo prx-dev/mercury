@@ -1,7 +1,5 @@
 package com.prx.mercury.api.v1.service;
 
-import com.google.api.services.gmail.Gmail;
-import com.google.api.services.gmail.model.Message;
 import com.prx.mercury.api.v1.to.EmailContact;
 import com.prx.mercury.api.v1.to.TemplateDefinedTO;
 import com.prx.mercury.api.v1.to.TemplateTO;
@@ -13,15 +11,14 @@ import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.IntFunction;
@@ -47,18 +44,17 @@ public class EmailServiceImpl implements EmailService {
     private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
     private final Configuration freemarkerConfig;
     private final EmailMessageNSRepository emailMessageNSRepository;
-    private final Gmail gmail;
+    private final JavaMailSender mailSender;
 
     /// Constructs an EmailServiceImpl with required dependencies.
     ///
-    /// @param gmail                    The Gmail API client for sending emails
     /// @param freemarkerConfig         The FreeMarker configuration for processing email templates
     /// @param emailMessageNSRepository The repository for email message document persistence
-    public EmailServiceImpl(Gmail gmail, @Qualifier("getFreeMarkerConfiguration") Configuration freemarkerConfig, EmailMessageNSRepository emailMessageNSRepository
+    public EmailServiceImpl(@Qualifier("getFreeMarkerConfiguration") Configuration freemarkerConfig, EmailMessageNSRepository emailMessageNSRepository, JavaMailSender mailSender
     ) {
-        this.gmail = gmail;
         this.freemarkerConfig = freemarkerConfig;
         this.emailMessageNSRepository = emailMessageNSRepository;
+        this.mailSender = mailSender;
     }
 
     /// Retrieves email messages by their delivery status.
@@ -158,23 +154,11 @@ public class EmailServiceImpl implements EmailService {
                 mimeMessageHelper.setCc(ccList);
             }
 
-            isProcessed = this.gmail.users().messages().send("me", createEmail(mimeMessage)).execute().getLabelIds().contains(DeliveryStatusType.SENT.name());
+            mailSender.send(mimeMessage);
+            isProcessed = true;
         } catch (IOException | TemplateException | MessagingException ex) {
             logger.error("Error sending email: {}", ex.getMessage());
         }
         return isProcessed;
-    }
-
-    /// Converts a MimeMessage to a Gmail API Message object with Base64 encoding.
-    ///
-    /// @param mimeMessage The MimeMessage to convert
-    /// @return A Gmail API Message object with the raw content encoded in Base64
-    /// @throws MessagingException If there is an error accessing the MimeMessage
-    /// @throws IOException        If there is an error writing the MimeMessage to the output stream
-    private Message createEmail(MimeMessage mimeMessage) throws MessagingException, IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        mimeMessage.writeTo(outputStream);
-
-        return new Message().setRaw(Base64.encodeBase64URLSafeString(outputStream.toByteArray()));
     }
 }
