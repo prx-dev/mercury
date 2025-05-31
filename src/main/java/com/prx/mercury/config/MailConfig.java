@@ -27,7 +27,7 @@ public class MailConfig {
     private String password;
     @Value("${spring.mail.protocol}")
     private String protocol;
-    @Value("${spring.mail.properties.mail.timeout}")
+    @Value("${spring.mail.properties.mail.smtp.timeout}")
     private int timeout;
     @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
     private boolean starttls;
