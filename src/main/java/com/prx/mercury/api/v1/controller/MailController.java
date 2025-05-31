@@ -12,11 +12,10 @@
  */
 package com.prx.mercury.api.v1.controller;
 
-import com.prx.mercury.api.v1.service.EmailServiceImpl;
+import com.prx.mercury.api.v1.service.EmailService;
 import com.prx.mercury.api.v1.to.SendEmailRequest;
 import com.prx.mercury.api.v1.to.SendEmailResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,19 +35,18 @@ import java.util.Objects;
 /// The request body is validated to ensure it is not null.
 ///
 /// @version 1.0.0, 03-05-2022
-/// @since 11
+/// @since 21
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/mail")
 public class MailController implements MailApi {
 
-    private final EmailServiceImpl emailServiceImpl;
+    private final EmailService emailService;
 
     /// Constructor for MailController.
     ///
-    /// @param emailServiceImpl the email service implementation to be used for sending emails
-    public MailController(EmailServiceImpl emailServiceImpl) {
-        this.emailServiceImpl = emailServiceImpl;
+    /// @param emailService the email service implementation to be used for sending emails
+    public MailController(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     /// Send an email.
@@ -61,7 +59,7 @@ public class MailController implements MailApi {
     /// @return a ResponseEntity with the result of the email sending operation
     @Override
     public ResponseEntity<SendEmailResponse> send(@RequestBody SendEmailRequest requestMail) {
-        return emailServiceImpl.sendMail(Objects.requireNonNull(requestMail));
+        return emailService.sendMail(Objects.requireNonNull(requestMail));
     }
 
 }

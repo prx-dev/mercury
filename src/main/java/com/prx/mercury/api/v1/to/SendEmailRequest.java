@@ -6,13 +6,14 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /// A record that represents a request to send an email.
 ///
-/// @param templateId The ID of the email template.
+/// @param templateDefinedId The ID of the email template defined.
+/// @param userId The ID of the template usage.
 /// @param from The sender's email address.
 /// @param to The list of recipient email addresses.
 /// @param cc The list of CC email addresses.
@@ -21,7 +22,8 @@ import java.util.Map;
 /// @param sendDate The date the email was sent.
 /// @param params Additional parameters for the email.
 public record SendEmailRequest (
-        @NotNull @NotBlank @NotEmpty String templateId,
+        @NotNull UUID templateDefinedId,
+        @NotNull UUID userId,
         @NotNull @NotBlank @NotEmpty String from,
         @NotNull List<EmailContact> to,
         @NotNull List<EmailContact> cc,
@@ -34,7 +36,8 @@ public record SendEmailRequest (
     @Override
     public String toString() {
         return "SendEmailRequest{" +
-                "templateId='" + templateId + '\'' +
+                "templateId='" + templateDefinedId + '\'' +
+                ", userId='" + userId + '\'' +
                 ", from='" + from + '\'' +
                 ", to=" + to +
                 ", cc=" + cc +
