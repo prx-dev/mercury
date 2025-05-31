@@ -31,11 +31,9 @@
         <postgresql.version>42.7.4</postgresql.version>
         <google.gson.version>2.10.1</google.gson.version>
         <!--        PRX Commons-->
-        <com.prx.commons.version>0.0.4</com.prx.commons.version>
-        <com.prx.commons-services.version>0.0.1</com.prx.commons-services.version>
-        <com.prx.persistence.version>0.0.3</com.prx.persistence.version>
+        <com.prx.commons.version>0.0.3</com.prx.commons.version>
+        <com.prx.persistence.version>1.0.1</com.prx.persistence.version>
         <com.prx.security-oauth.version>0.0.1</com.prx.security-oauth.version>
-        <!--        Messaging tool-->
         <telegrambots.version>8.0.0</telegrambots.version>
         <!--        MAVEN-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -46,16 +44,14 @@
         <maven.plugin.jxr.version>3.0.0</maven.plugin.jxr.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
         <!--        REPOSITORY-->
-        <repsy.account.userEntity>${env.REPSY_ACCOUNT_USER}</repsy.account.userEntity>
+        <repsy.account.user>${env.REPSY_ACCOUNT_USER}</repsy.account.user>
         <repsy.account.password>${env.REPSY_ACCOUNT_PASSWORD}</repsy.account.password>
         <!--        OPEN API -->
         <springdoc.version>2.6.0</springdoc.version>
         <!--        SPRING -->
         <spring-core.version>6.0.6</spring-core.version>
         <spring-boot.version>3.4.1</spring-boot.version>
-        <spring-cloud.version>2024.0.1</spring-cloud.version>
-        <spring-boot-kafka.version>3.3.2</spring-boot-kafka.version>
-        <spring-boot-mongodb.version>3.3.2</spring-boot-mongodb.version>
+        <spring-cloud.version>2024.0.0</spring-cloud.version>
         <spring-security-aouth2-autoconfigure.version>3.3.2</spring-security-aouth2-autoconfigure.version>
         <spring-cloud-dependencies.version>4.2.0</spring-cloud-dependencies.version>
         <spring-bootstrap.version>4.1.4</spring-bootstrap.version>
@@ -73,8 +69,7 @@
         <sonar.organization>prx-dev</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.exclusions>**/*.xml,**/*Application.*,**/exceptions/*, **/util/*, **/config/*,**/config/**/*,
-            **/mapper/*, **/*Test.*, **/cache/*,
-            **/cache/domain/*,**/repository/*,**/repository/**/*,**/*Entity.*,**/*Document.*
+            **/mapper/*, **/*Test.*, **/cache/*, **/cache/domain/*
         </sonar.exclusions>
         <project.ruleset>${project.basedir}/ruleset.xml</project.ruleset>
     </properties>
@@ -95,16 +90,6 @@
             <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
-            <version>${spring-boot-kafka.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
             <version>${spring-boot.version}</version>
@@ -117,7 +102,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
-            <version>${spring-boot.version}</version>
+            <version>3.3.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -128,22 +113,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>${spring-cloud-dependencies.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-            <version>${spring-boot-mongodb.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -184,13 +153,18 @@
         </dependency>
         <dependency>
             <groupId>com.prx</groupId>
-            <artifactId>commons-services</artifactId>
-            <version>${com.prx.commons-services.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.prx</groupId>
             <artifactId>security-oauth</artifactId>
             <version>${com.prx.security-oauth.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>${spring-cloud-dependencies.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.eureka</groupId>
+            <artifactId>eureka-client-jersey3</artifactId>
+            <version>2.0.3</version>
         </dependency>
         <!--        Converter-->
         <dependency>
@@ -455,7 +429,7 @@
         <repository>
             <id>PRX-Repsy</id>
             <name>My Private Maven Repository on Repsy</name>
-            <url>https://repo.repsy.io/mvn/${repsy.account.userEntity}/${repsy.account.password}</url>
+            <url>https://repo.repsy.io/mvn/${repsy.account.user}/${repsy.account.password}</url>
         </repository>
     </distributionManagement>
 
