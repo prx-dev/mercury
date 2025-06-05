@@ -33,4 +33,13 @@ package com.prx.mercury.jpa.sql.repository;
                         @Param("applicationId") UUID applicationId,
                         @Param("expiresAtAfter") LocalDateTime expiresAtAfter,
                         @Param("isVerified") @NotNull Boolean isVerified);
+
+                /**
+                 * Finds the is_verified status of the most recent verification code for a user.
+                 *
+                 * @param userId The ID of the user
+                 * @return Boolean is_verified status or null if not found
+                 */
+                @Query(value = "SELECT vce.isVerified FROM VerificationCodeEntity vce WHERE vce.userEntity.id = :userId ORDER BY vce.modifiedAt DESC LIMIT 1")
+                Boolean findLatestIsVerifiedByUserId(@Param("userId") UUID userId);
             }

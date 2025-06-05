@@ -82,4 +82,52 @@ class VerificationCodeServiceImplTest {
         verify(verificationCodeMapper).toVerificationCodeTO(savedEntity);
     }
 
+    @Test
+    @DisplayName("getLatestIsVerifiedStatus returns true when record found and isVerified is true")
+    void getLatestIsVerifiedStatus_ReturnsTrue() {
+        UUID userId = UUID.randomUUID();
+        when(verificationCodeRepository.findLatestIsVerifiedByUserId(userId)).thenReturn(true);
+        var response = verificationCodeServiceImpl.getLatestIsVerifiedStatus(userId.toString());
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(Boolean.TRUE, response.getBody());
+    }
+
+    @Test
+    @DisplayName("getLatestIsVerifiedStatus returns false when record found and isVerified is false")
+    void getLatestIsVerifiedStatus_ReturnsFalse() {
+        UUID userId = UUID.randomUUID();
+        when(verificationCodeRepository.findLatestIsVerifiedByUserId(userId)).thenReturn(false);
+        var response = verificationCodeServiceImpl.getLatestIsVerifiedStatus(userId.toString());
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(Boolean.FALSE, response.getBody());
+    }
+
+    @Test
+    @DisplayName("getLatestIsVerifiedStatus returns 404 when no record found")
+    void getLatestIsVerifiedStatus_NotFound() {
+        UUID userId = UUID.randomUUID();
+        when(verificationCodeRepository.findLatestIsVerifiedByUserId(userId)).thenReturn(null);
+        var response = verificationCodeServiceImpl.getLatestIsVerifiedStatus(userId.toString());
+        assertEquals(404, response.getStatusCode().value());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    @DisplayName("getLatestIsVerifiedStatus returns 400 for invalid userId format")
+    void getLatestIsVerifiedStatus_InvalidUserId() {
+        var response = verificationCodeServiceImpl.getLatestIsVerifiedStatus("not-a-uuid");
+        assertEquals(400, response.getStatusCode().value());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    @DisplayName("getLatestIsVerifiedStatus returns 500 on repository exception")
+    void getLatestIsVerifiedStatus_RepositoryException() {
+        UUID userId = UUID.randomUUID();
+        when(verificationCodeRepository.findLatestIsVerifiedByUserId(userId)).thenThrow(new RuntimeException("DB error"));
+        var response = verificationCodeServiceImpl.getLatestIsVerifiedStatus(userId.toString());
+        assertEquals(500, response.getStatusCode().value());
+        assertNull(response.getBody());
+    }
+
 }
