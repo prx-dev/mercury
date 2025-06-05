@@ -9,8 +9,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "verification-code", description = "The verification code API")
 public interface VerificationCodeApi {
@@ -34,5 +36,20 @@ public interface VerificationCodeApi {
     default ResponseEntity<Void> sendVerificationCode(@RequestBody @Valid VerificationCodeRequest verificationCodeRequest) {
         return this.getService().confirmCode(verificationCodeRequest);
     }
+
+    /**
+     * Get the is_verified status of the latest verification code for a user.
+     *
+     * @param userId the user ID
+     * @return ResponseEntity<Boolean> is_verified status or null if not found
+     */
+    @Operation(description = "Get the is_verified status of the latest verification code for a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Status retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "No verification code found for user"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping(path = "/latest-status")
+    ResponseEntity<Boolean> getLatestIsVerifiedStatus(@RequestParam("userId") String userId);
 
 }

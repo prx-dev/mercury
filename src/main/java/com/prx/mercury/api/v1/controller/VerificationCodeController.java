@@ -20,4 +20,9 @@ public class VerificationCodeController implements VerificationCodeApi {
     public ResponseEntity<Void> sendVerificationCode(VerificationCodeRequest verificationCodeRequest) {
         return verificationCodeService.confirmCode(verificationCodeRequest);
     }
+
+    @Override
+    public ResponseEntity<Boolean> getLatestIsVerifiedStatus(String userId) {
+        return verificationCodeService.getLatestIsVerifiedStatus(userId);
+    }
 }

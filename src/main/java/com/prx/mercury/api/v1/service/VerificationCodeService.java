@@ -14,4 +14,14 @@ public interface VerificationCodeService {
     default ResponseEntity<Void> confirmCode(VerificationCodeRequest verificationCodeRequest) {
         throw new UnsupportedOperationException(HttpStatus.NOT_IMPLEMENTED.getReasonPhrase());
     }
+
+    /**
+     * Retrieves the is_verified status of the latest verification code for a user.
+     *
+     * @param userId the user ID
+     * @return ResponseEntity<Boolean> is_verified status or null if not found
+     */
+    default ResponseEntity<Boolean> getLatestIsVerifiedStatus(String userId) {
+        throw new UnsupportedOperationException(HttpStatus.NOT_IMPLEMENTED.getReasonPhrase());
+    }
 }
